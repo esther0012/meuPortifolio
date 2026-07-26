@@ -1,0 +1,1410 @@
+<title>esther massabane — freelance fullstack developer</title>
+<style>
+  :root {
+    --ground: #0A0A0B;
+    --panel: #101014;
+    --ink: #F0F0EE;
+    --ink-soft: #B8B8B4;
+    --muted: #5C5C63;
+    --faint: #2A2B32;
+    --rule: #1C1D22;
+    --accent: #7CFFB2;
+    --accent-soft: #7CFFB233;
+    --sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --ground: #FAFAF8;
+      --panel: #F2F2EE;
+      --ink: #0A0A0B;
+      --ink-soft: #35353A;
+      --muted: #8E8E92;
+      --faint: #DDDDD8;
+      --rule: #E4E4E0;
+      --accent: #0FA968;
+      --accent-soft: #0FA96822;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0A0A0B; --panel: #101014; --ink: #F0F0EE; --ink-soft: #B8B8B4;
+    --muted: #5C5C63; --faint: #2A2B32; --rule: #1C1D22;
+    --accent: #7CFFB2; --accent-soft: #7CFFB233;
+  }
+  :root[data-theme="light"] {
+    --ground: #FAFAF8; --panel: #F2F2EE; --ink: #0A0A0B; --ink-soft: #35353A;
+    --muted: #8E8E92; --faint: #DDDDD8; --rule: #E4E4E0;
+    --accent: #0FA968; --accent-soft: #0FA96822;
+  }
+
+  html { background: var(--ground); }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background:
+      radial-gradient(ellipse 800px 400px at 50% -10%, var(--accent-soft), transparent 60%),
+      var(--ground);
+    line-height: 1.5;
+    font-size: 14px;
+    letter-spacing: -0.005em;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+    font-variant-numeric: tabular-nums;
+  }
+  a { color: inherit; text-decoration: none; }
+  a:focus-visible, button:focus-visible {
+    outline: 1px solid var(--accent); outline-offset: 4px;
+  }
+  ::selection { background: var(--accent); color: var(--ground); }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 3vw, 40px); }
+
+  /* ————— TOPBAR ————— */
+  .topbar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 32px;
+    align-items: center;
+    padding: 20px 0;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in oklab, var(--ground) 88%, transparent);
+    backdrop-filter: saturate(140%) blur(12px);
+    -webkit-backdrop-filter: saturate(140%) blur(12px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .mark { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); }
+  .mark-glyph {
+    width: 20px; height: 20px;
+    border: 1px solid var(--ink);
+    display: grid; place-items: center;
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+  }
+  .top-nav { display: flex; gap: 20px; justify-self: center; }
+  .top-nav a {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 0;
+    transition: color .15s;
+  }
+  .top-nav a::before { content: attr(data-idx); color: var(--faint); font-size: 10px; }
+  .top-nav a:hover { color: var(--ink); }
+  .top-nav a:hover::before { color: var(--accent); }
+  .clock { display: inline-flex; align-items: center; gap: 10px; }
+  .clock .dot {
+    width: 6px; height: 6px; border-radius: 999px; background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 50% { opacity: 0.45; } }
+  #clockTime { color: var(--ink); font-variant-numeric: tabular-nums; }
+  .cta-hire {
+    padding: 6px 12px;
+    border: 1px solid var(--accent);
+    color: var(--ground);
+    background: var(--accent);
+    font-family: var(--mono); font-size: 10.5px;
+    letter-spacing: 0.04em;
+    transition: box-shadow .2s;
+  }
+  .cta-hire:hover { box-shadow: 0 0 0 3px var(--accent-soft); }
+
+  /* — language switch — */
+  .lang {
+    display: inline-flex; align-items: stretch;
+    border: 1px solid var(--rule);
+    font-family: var(--mono); font-size: 10.5px;
+    letter-spacing: 0.04em;
+    overflow: hidden;
+  }
+  .lang button {
+    background: transparent; border: 0;
+    padding: 5px 9px; color: var(--muted);
+    cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  .lang button + button { border-left: 1px solid var(--rule); }
+  .lang button:hover { color: var(--ink); }
+  .lang button.active { background: var(--ink); color: var(--ground); }
+
+  @media (max-width: 720px) {
+    .top-nav { display: none; }
+    .topbar { grid-template-columns: auto 1fr; gap: 12px; }
+  }
+
+  /* ————— HERO ————— */
+  .hero {
+    padding: clamp(72px, 12vw, 140px) 0 clamp(56px, 8vw, 88px);
+    position: relative;
+  }
+  .hero::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--rule) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, black 0%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, black 0%, transparent 80%);
+    opacity: 0.35;
+    pointer-events: none;
+  }
+  .badge-row {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 10.5px;
+    letter-spacing: 0.06em; color: var(--muted);
+    margin-bottom: 24px; position: relative;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 10px;
+    border: 1px solid var(--rule);
+  }
+  .badge.avail {
+    color: var(--accent);
+    border-color: color-mix(in oklab, var(--accent) 40%, var(--rule));
+    background: color-mix(in oklab, var(--accent) 6%, transparent);
+  }
+  .badge .b-dot {
+    width: 6px; height: 6px; border-radius: 999px; background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .name {
+    font-family: var(--sans);
+    font-weight: 600;
+    letter-spacing: -0.048em;
+    line-height: 0.9;
+    font-size: clamp(48px, 10.5vw, 148px);
+    color: var(--ink);
+    text-wrap: balance;
+    position: relative;
+    margin: 0 0 clamp(24px, 3vw, 40px);
+  }
+  .name .low { color: var(--muted); font-weight: 500; }
+  .name .accent { color: var(--accent); }
+  .cursor {
+    display: inline-block;
+    width: 0.42em; height: 0.85em;
+    background: var(--accent);
+    vertical-align: -0.05em;
+    margin-left: 0.05em;
+    animation: blink 1.05s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .hero-pitch {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 40px;
+    align-items: end;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    position: relative;
+  }
+  @media (max-width: 720px) { .hero-pitch { grid-template-columns: 1fr; } }
+  .pitch {
+    font-size: clamp(16px, 1.5vw, 20px);
+    color: var(--ink-soft);
+    max-width: 55ch;
+    letter-spacing: -0.008em;
+    line-height: 1.4;
+  }
+  .pitch b { color: var(--ink); font-weight: 500; }
+  .pitch .glow { color: var(--accent); font-weight: 500; }
+
+  .hero-actions { display: grid; gap: 10px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: space-between; gap: 20px;
+    padding: 14px 18px;
+    font-family: var(--mono); font-size: 12px;
+    letter-spacing: 0.04em;
+    border: 1px solid var(--rule);
+    transition: border-color .15s, background .15s, transform .1s;
+    color: var(--ink);
+  }
+  .btn:hover { border-color: var(--ink-soft); background: var(--panel); }
+  .btn:active { transform: translateY(1px); }
+  .btn.primary {
+    background: var(--accent); color: var(--ground); border-color: var(--accent);
+    font-weight: 500;
+  }
+  .btn.primary:hover { box-shadow: 0 0 0 3px var(--accent-soft); background: var(--accent); }
+  .btn .arr { transition: transform .2s; }
+  .btn:hover .arr { transform: translateX(4px); }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: clamp(56px, 7vw, 88px);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  .stat {
+    padding: 22px 20px;
+    border-right: 1px solid var(--rule);
+  }
+  .stat:first-child { padding-left: 0; }
+  .stat:last-child { border-right: none; padding-right: 0; }
+  .stat .n {
+    font-size: clamp(28px, 3.6vw, 44px);
+    letter-spacing: -0.028em;
+    font-weight: 500; line-height: 1;
+    color: var(--ink);
+    display: flex; align-items: baseline; gap: 4px;
+  }
+  .stat .n .u { font-size: 0.5em; color: var(--muted); font-weight: 400; }
+  .stat .l {
+    font-family: var(--mono); font-size: 10.5px;
+    letter-spacing: 0.06em; color: var(--muted);
+    margin-top: 8px; text-transform: uppercase;
+  }
+  @media (max-width: 720px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .stat:nth-child(2) { border-right: none; }
+    .stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1px solid var(--rule); }
+    .stat:nth-child(3) { padding-left: 0; }
+    .stat:nth-child(4) { padding-right: 0; }
+  }
+
+  /* ————— SECTIONS ————— */
+  section {
+    padding: clamp(80px, 10vw, 140px) 0;
+    border-top: 1px solid var(--rule);
+    position: relative;
+  }
+  .sec-head {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 48px;
+    align-items: baseline;
+    margin-bottom: clamp(48px, 6vw, 72px);
+  }
+  @media (max-width: 720px) { .sec-head { grid-template-columns: 1fr; gap: 16px; } }
+  .sec-label {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--muted); letter-spacing: 0.04em;
+    display: flex; align-items: center; gap: 12px;
+    padding-top: 6px;
+  }
+  .sec-label::before { content: attr(data-num); color: var(--accent); font-weight: 500; }
+  .sec-title {
+    font-size: clamp(28px, 3.6vw, 44px);
+    font-weight: 500;
+    letter-spacing: -0.028em;
+    line-height: 1.05;
+    color: var(--ink);
+    text-wrap: balance;
+    max-width: 24ch;
+  }
+  .sec-title span.hl { color: var(--muted); }
+  .sec-lede {
+    color: var(--ink-soft);
+    font-size: 15px;
+    max-width: 62ch;
+    margin: -20px 0 clamp(32px, 4vw, 48px) 248px;
+    letter-spacing: -0.005em;
+  }
+  @media (max-width: 720px) { .sec-lede { margin-left: 0; } }
+  .sec-lede b { color: var(--ink); font-weight: 500; }
+
+  /* ————— SERVICES ————— */
+  .services {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .svc {
+    background: var(--ground);
+    padding: 28px 24px;
+    display: grid; gap: 12px;
+    align-content: start;
+    min-height: 260px;
+    position: relative;
+    transition: background .18s;
+  }
+  .svc:hover { background: var(--panel); }
+  .svc-idx {
+    font-family: var(--mono); font-size: 10.5px;
+    color: var(--muted); letter-spacing: 0.06em;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .svc-idx .price { color: var(--ink); }
+  .svc h3 {
+    font-size: 22px; font-weight: 500;
+    letter-spacing: -0.02em; line-height: 1.15;
+    color: var(--ink); margin: 4px 0 4px;
+  }
+  .svc p {
+    color: var(--ink-soft); font-size: 13.5px;
+    max-width: 34ch; letter-spacing: -0.005em;
+  }
+  .svc-tags {
+    display: flex; flex-wrap: wrap; gap: 4px 12px;
+    margin-top: auto; padding-top: 12px;
+    font-family: var(--mono); font-size: 10.5px;
+    color: var(--muted); letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .svc-tags span + span::before { content: "·"; margin-right: 12px; color: var(--faint); }
+
+  /* ————— STACK ————— */
+  .stack {
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--mono);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 60px 180px 1fr auto;
+    gap: 24px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: center;
+    font-size: 12px;
+    color: var(--muted);
+    transition: background .18s, padding .18s;
+  }
+  .row:last-child { border-bottom: none; }
+  .row:hover {
+    background: color-mix(in oklab, var(--accent) 3%, transparent);
+    padding-left: 16px; padding-right: 16px;
+    margin-left: -16px; margin-right: -16px;
+  }
+  .row .lyr { color: var(--muted); letter-spacing: 0.04em; }
+  .row .name-cell { color: var(--ink); font-size: 14px; letter-spacing: -0.005em; }
+  .row .techs { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+  .row .techs span { color: var(--ink-soft); }
+  .row .techs span + span::before { content: "·"; margin-right: 14px; color: var(--faint); }
+  .row .meta { color: var(--muted); font-size: 10.5px; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; }
+  @media (max-width: 720px) {
+    .row { grid-template-columns: auto 1fr; gap: 4px 16px; }
+    .row .techs, .row .meta { grid-column: 1 / -1; }
+  }
+
+  /* ————— WORK ————— */
+  .work-list { border-top: 1px solid var(--rule); }
+  .item {
+    display: grid;
+    grid-template-columns: 60px minmax(0, 2fr) minmax(0, 1.6fr) auto;
+    gap: 32px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+    position: relative;
+    transition: padding .2s ease;
+  }
+  .item:hover {
+    padding-left: 12px; padding-right: 12px;
+    margin-left: -12px; margin-right: -12px;
+    background: color-mix(in oklab, var(--accent) 2.5%, transparent);
+  }
+  .item:hover .item-arrow { transform: translateX(6px); color: var(--accent); }
+  .item .idx {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .item h3 {
+    font-size: clamp(22px, 2.6vw, 32px);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: var(--ink);
+    margin: 0 0 6px;
+  }
+  .item .item-sub {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .item .desc {
+    color: var(--ink-soft); font-size: 14px; max-width: 46ch;
+    letter-spacing: -0.005em;
+  }
+  .item .stack-mini {
+    display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 10px;
+    font-family: var(--mono); font-size: 10.5px; color: var(--muted);
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .item-arrow {
+    font-family: var(--mono); font-size: 20px; color: var(--muted);
+    transition: transform .25s cubic-bezier(.2,.7,.2,1), color .18s;
+  }
+  @media (max-width: 720px) {
+    .item { grid-template-columns: auto 1fr; gap: 4px 20px; padding: 24px 0; }
+    .item .desc, .item-arrow { grid-column: 2; }
+    .item-arrow { justify-self: end; }
+  }
+
+  /* ————— LAB ————— */
+  .lab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .lab {
+    background: var(--ground);
+    display: grid;
+    grid-template-rows: 1fr auto;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    transition: background .2s;
+  }
+  .lab:hover { background: var(--panel); }
+  .lab:hover .lab-arrow { opacity: 1; transform: translate(0, 0); }
+  .lab-preview {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    font-family: var(--mono);
+    font-size: 32px;
+    letter-spacing: -0.02em;
+    color: rgba(255,255,255,.92);
+    font-weight: 600;
+  }
+  .lab-preview::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,.35) 100%);
+    pointer-events: none;
+  }
+  .lab-meta {
+    padding: 12px 14px;
+    border-top: 1px solid var(--rule);
+    display: flex; justify-content: space-between; align-items: center; gap: 8px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    background: var(--ground);
+  }
+  .lab-meta .n { color: var(--ink); }
+  .lab-meta .i { color: var(--muted); }
+  .lab-arrow {
+    position: absolute; top: 12px; right: 12px;
+    font-family: var(--mono); font-size: 12px; color: var(--ink);
+    background: rgba(0,0,0,.4);
+    padding: 4px 8px;
+    opacity: 0; transform: translate(-4px, 4px);
+    transition: opacity .2s, transform .2s;
+    z-index: 2;
+  }
+  .lp1 { background: linear-gradient(135deg, #0A0A0A, #1a1a2e); color: #E6C776; }
+  .lp2 { background: #F5F0E8; color: #0F0F0F; }
+  .lp3 { background: linear-gradient(90deg, #2C3E50 50%, #E74C3C 50%); }
+  .lp4 { background: #FFEB3B; color: #000; }
+  .lp5 { background: #E9EEF3; color: #0B4F6C; }
+  .lp6 { background: linear-gradient(180deg, #F97A5C, #FFD37E); color: #3B1F0F; }
+  .lp7 { background: #EAEAEC; color: #333; }
+  .lp8 { background: linear-gradient(120deg, #6C5CE7, #A29BFE); }
+  .lp9 { background: #FDFDFD; color: #2C2C2C; }
+  .lp10 { background: #0E1F2E; color: #F4C04D; }
+
+  /* ————— PROCESS ————— */
+  .process {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .step {
+    background: var(--ground);
+    padding: 28px 24px;
+    display: grid; gap: 14px;
+    align-content: start;
+    min-height: 220px;
+  }
+  .step-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: var(--mono); font-size: 10.5px;
+    color: var(--muted); letter-spacing: 0.06em;
+  }
+  .step-num {
+    font-size: clamp(36px, 5vw, 56px);
+    font-family: var(--mono); font-weight: 400;
+    color: var(--faint); line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .step h3 {
+    font-size: 18px; font-weight: 500;
+    letter-spacing: -0.015em; color: var(--ink); margin: 0;
+  }
+  .step p {
+    color: var(--ink-soft); font-size: 13px; max-width: 34ch;
+    letter-spacing: -0.005em;
+  }
+  .step-eta {
+    font-family: var(--mono); font-size: 10.5px;
+    color: var(--accent); letter-spacing: 0.06em;
+    padding-top: 8px; margin-top: auto;
+    border-top: 1px solid var(--rule);
+  }
+  @media (max-width: 900px) { .process { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .process { grid-template-columns: 1fr; } }
+
+  /* ————— TRACK ————— */
+  .track { border-top: 1px solid var(--rule); font-family: var(--mono); }
+  .stop {
+    display: grid;
+    grid-template-columns: 140px minmax(0, 1fr) minmax(0, 1.4fr);
+    gap: 32px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+    transition: padding .2s;
+  }
+  .stop:hover {
+    padding-left: 12px; padding-right: 12px;
+    margin-left: -12px; margin-right: -12px;
+    background: color-mix(in oklab, var(--accent) 2.5%, transparent);
+  }
+  .stop .yr { color: var(--muted); font-size: 11px; letter-spacing: 0.04em; }
+  .stop .yr.now { color: var(--accent); }
+  .stop .role {
+    color: var(--ink); font-size: 15px; font-family: var(--sans);
+    letter-spacing: -0.005em;
+  }
+  .stop .role .company {
+    display: block; font-family: var(--mono); font-size: 10.5px;
+    color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .stop .note {
+    color: var(--ink-soft); font-family: var(--sans); font-size: 13.5px;
+    letter-spacing: -0.005em; max-width: 52ch;
+  }
+  @media (max-width: 720px) { .stop { grid-template-columns: 1fr; gap: 6px; } }
+
+  /* ————— FAQ ————— */
+  .faq { border-top: 1px solid var(--rule); }
+  .q {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 24px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .q .k { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
+  .q h4 {
+    font-size: 15px; color: var(--ink); font-weight: 500; margin: 0 0 6px;
+    letter-spacing: -0.005em;
+  }
+  .q p {
+    font-size: 13.5px; color: var(--ink-soft); max-width: 62ch;
+    letter-spacing: -0.005em;
+  }
+
+  /* ————— CONTACT ————— */
+  .contact-head {
+    font-size: clamp(40px, 6vw, 88px);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 0.98;
+    color: var(--ink);
+    text-wrap: balance;
+    max-width: 16ch;
+    margin: 0 0 clamp(24px, 3vw, 40px);
+  }
+  .contact-head span { color: var(--muted); }
+  .contact-head .glow { color: var(--accent); }
+  .contact-sub {
+    color: var(--ink-soft); font-size: 15px;
+    max-width: 52ch;
+    margin: 0 0 clamp(32px, 4vw, 56px);
+  }
+  .contact-sub b { color: var(--ink); font-weight: 500; }
+  .contact-cta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    max-width: 640px;
+    margin-bottom: clamp(40px, 5vw, 64px);
+  }
+  @media (max-width: 520px) { .contact-cta { grid-template-columns: 1fr; } }
+  .contact-list {
+    display: grid;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .contact-list a {
+    display: grid;
+    grid-template-columns: 90px minmax(0, 1fr) auto;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+    color: var(--ink);
+    transition: padding .2s, color .18s;
+    letter-spacing: 0.01em;
+  }
+  .contact-list a:hover {
+    padding-left: 12px; padding-right: 12px;
+    margin-left: -12px; margin-right: -12px;
+    background: color-mix(in oklab, var(--accent) 2.5%, transparent);
+  }
+  .contact-list a:hover .arrow { transform: translate(4px, -4px); color: var(--accent); }
+  .contact-list a .k { color: var(--muted); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .contact-list a .v { color: var(--ink); word-break: break-all; }
+  .arrow { color: var(--muted); transition: transform .2s, color .18s; }
+
+  /* ————— FOOTER ————— */
+  footer {
+    padding: 32px 0 48px;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  footer div:nth-child(2) { text-align: center; }
+  footer div:nth-child(3) { text-align: right; }
+  footer b { color: var(--ink); font-weight: 400; }
+  @media (max-width: 520px) {
+    footer { grid-template-columns: 1fr; text-align: left; }
+    footer div:nth-child(2), footer div:nth-child(3) { text-align: left; }
+  }
+
+  .theme-toggle {
+    background: transparent; border: 1px solid var(--rule); color: var(--muted);
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.04em;
+    padding: 5px 10px; cursor: pointer;
+    transition: color .15s, border-color .15s;
+  }
+  .theme-toggle:hover { color: var(--ink); border-color: var(--ink-soft); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+</style>
+
+<div class="wrap">
+
+  <!-- ————— TOPBAR ————— -->
+  <header class="topbar" role="banner">
+    <a class="mark" href="#top" aria-label="home">
+      <span class="mark-glyph">e</span>
+      <span>esther.dev</span>
+    </a>
+    <nav class="top-nav" aria-label="sections">
+      <a href="#services" data-idx="01" data-t="nav.services">services</a>
+      <a href="#stack" data-idx="02" data-t="nav.stack">stack</a>
+      <a href="#work" data-idx="03" data-t="nav.work">work</a>
+      <a href="#process" data-idx="04" data-t="nav.process">process</a>
+      <a href="#contact" data-idx="05" data-t="nav.contact">contact</a>
+    </nav>
+    <div class="clock">
+      <span class="dot" aria-hidden="true"></span>
+      <span>BSB</span>
+      <span id="clockTime">—:—:—</span>
+      <div class="lang" role="group" aria-label="language">
+        <button data-lang="pt" class="active">PT</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <button class="theme-toggle" id="themeToggle" aria-label="toggle theme">theme</button>
+      <a class="cta-hire" href="#contact" data-t="nav.hire">iniciar projeto ↗</a>
+    </div>
+  </header>
+
+  <!-- ————— HERO ————— -->
+  <section class="hero" id="top" aria-label="intro">
+
+    <div class="badge-row">
+      <span class="badge avail"><span class="b-dot"></span><span data-t="hero.avail">aceitando 2 projetos · q1 · 2026</span></span>
+      <span class="badge" data-t="hero.loc">brasília, df · remoto</span>
+      <span class="badge" data-t="hero.lang">pt-br · en</span>
+    </div>
+
+    <h1 class="name" data-t="hero.title">freelance<br><span class="accent">fullstack</span> <span class="low">developer</span><span class="cursor" aria-hidden="true"></span></h1>
+
+    <div class="hero-pitch">
+      <p class="pitch" data-t="hero.pitch">construo <b>sites, apps web e automações</b> para times que precisam do produto <b>funcionando</b> — não só entregue. quatro anos entre <b>react, .net e python</b>, do primeiro brief ao deploy em produção. <span class="glow">orçamento em 24h.</span></p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#contact"><span data-t="hero.cta1">solicitar orçamento</span><span class="arr">→</span></a>
+        <a class="btn" href="#work"><span data-t="hero.cta2">ver projetos entregues</span><span class="arr">↓</span></a>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="n">4<span class="u" data-t="stats.1u">anos</span></div>
+        <div class="l" data-t="stats.1l">em produção</div>
+      </div>
+      <div class="stat">
+        <div class="n">5<span class="u" data-t="stats.2u">stacks</span></div>
+        <div class="l">react · vue · .net · node · python</div>
+      </div>
+      <div class="stat">
+        <div class="n">10<span class="u" data-t="stats.3u">landings</span></div>
+        <div class="l" data-t="stats.3l">no laboratório visual</div>
+      </div>
+      <div class="stat">
+        <div class="n">24<span class="u">h</span></div>
+        <div class="l" data-t="stats.4l">para responder brief</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ————— SERVICES ————— -->
+  <section id="services" aria-labelledby="services-title">
+    <div class="sec-head">
+      <div class="sec-label" data-num="01 /">services</div>
+      <h2 class="sec-title" id="services-title" data-t="svc.title">o que eu entrego. <span class="hl">preço e prazo claros.</span></h2>
+    </div>
+    <p class="sec-lede" data-t="svc.lede">quatro frentes de trabalho — cada projeto começa com um <b>brief de 30min</b> e uma <b>proposta escrita em 48h</b>, com escopo, prazo e preço fechados antes de eu escrever uma linha de código.</p>
+
+    <div class="services">
+      <article class="svc">
+        <div class="svc-idx"><span>/ 01</span><span class="price" data-t="svc.1.price">a partir de 1 sem.</span></div>
+        <h3 data-t="svc.1.title">landing pages & sites</h3>
+        <p data-t="svc.1.desc">página única ou site institucional completo — html, react ou vue. copy, layout, animações e deploy inclusos.</p>
+        <div class="svc-tags"><span>react</span><span>vue</span><span>scss</span><span>seo</span></div>
+      </article>
+
+      <article class="svc">
+        <div class="svc-idx"><span>/ 02</span><span class="price" data-t="svc.2.price">a partir de 3 sem.</span></div>
+        <h3 data-t="svc.2.title">apps web sob demanda</h3>
+        <p data-t="svc.2.desc">produto web do zero ou nova feature em base existente. front tipado, back em .net ou node, banco, auth e deploy.</p>
+        <div class="svc-tags"><span>react</span><span>.net</span><span>node</span><span>sql</span></div>
+      </article>
+
+      <article class="svc">
+        <div class="svc-idx"><span>/ 03</span><span class="price" data-t="svc.3.price">a partir de 2 sem.</span></div>
+        <h3 data-t="svc.3.title">apis & integrações</h3>
+        <p data-t="svc.3.desc">rest apis, integrações com serviços externos, gateways de pagamento e conectores entre sistemas que não se conversam.</p>
+        <div class="svc-tags"><span>.net</span><span>c#</span><span>node</span><span>rest</span></div>
+      </article>
+
+      <article class="svc">
+        <div class="svc-idx"><span>/ 04</span><span class="price" data-t="svc.4.price">a partir de 1 sem.</span></div>
+        <h3 data-t="svc.4.title">automações & scripts</h3>
+        <p data-t="svc.4.desc">workflows em python ou n8n que substituem tarefa manual — scraping, relatórios agendados, sync entre planilhas e apis.</p>
+        <div class="svc-tags"><span>python</span><span>n8n</span><span>etl</span></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ————— STACK ————— -->
+  <section id="stack" aria-labelledby="stack-title">
+    <div class="sec-head">
+      <div class="sec-label" data-num="02 /">the stack</div>
+      <h2 class="sec-title" id="stack-title" data-t="stack.title">capacidades técnicas. <span class="hl">do pixel à automação.</span></h2>
+    </div>
+
+    <div class="stack" role="list">
+      <div class="row" role="listitem">
+        <div class="lyr">L04</div>
+        <div class="name-cell">interface</div>
+        <div class="techs"><span>react</span><span>typescript</span><span>vue</span><span>angular</span><span>react native</span><span>scss</span></div>
+        <div class="meta" data-t="stack.1.meta">front · ux</div>
+      </div>
+      <div class="row" role="listitem">
+        <div class="lyr">L03</div>
+        <div class="name-cell">services</div>
+        <div class="techs"><span>.net</span><span>c#</span><span>node.js</span><span>rest apis</span></div>
+        <div class="meta" data-t="stack.2.meta">back · integração</div>
+      </div>
+      <div class="row" role="listitem">
+        <div class="lyr">L02</div>
+        <div class="name-cell">automation</div>
+        <div class="techs"><span>python</span><span>n8n</span><span>workflows</span></div>
+        <div class="meta" data-t="stack.3.meta">ops · fluxo</div>
+      </div>
+      <div class="row" role="listitem">
+        <div class="lyr">L01</div>
+        <div class="name-cell">data</div>
+        <div class="techs"><span>sql</span><span>modelagem</span><span>linux</span></div>
+        <div class="meta" data-t="stack.4.meta">infra · persistência</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ————— WORK ————— -->
+  <section id="work" aria-labelledby="work-title">
+    <div class="sec-head">
+      <div class="sec-label" data-num="03 /">selected work</div>
+      <h2 class="sec-title" id="work-title" data-t="work.title">projetos entregues. <span class="hl">em produção real.</span></h2>
+    </div>
+
+    <div class="work-list">
+      <a class="item" href="https://github.com/esther0012/rifaproApi" target="_blank" rel="noopener">
+        <div class="idx">/001</div>
+        <div>
+          <h3>rifapro · api</h3>
+          <div class="item-sub">c# · .net · sql</div>
+          <div class="stack-mini" data-t="work.1.tag">back-end · sorteios · regras transacionais</div>
+        </div>
+        <div class="desc" data-t="work.1.desc">back-end de plataforma de rifas online: regras de sorteio, persistência transacional e endpoints rest para o front consumir sem susto.</div>
+        <div class="item-arrow">↗</div>
+      </a>
+
+      <a class="item" href="https://github.com/esther0012/rifaproWeb" target="_blank" rel="noopener">
+        <div class="idx">/002</div>
+        <div>
+          <h3>rifapro · web</h3>
+          <div class="item-sub">typescript · react</div>
+          <div class="stack-mini" data-t="work.2.tag">front-end · mobile-first · estado tipado</div>
+        </div>
+        <div class="desc" data-t="work.2.desc">interface para compra e gestão de cotas. fluxo pensado para mobile primeiro, com estado tipado e componentes reutilizáveis.</div>
+        <div class="item-arrow">↗</div>
+      </a>
+
+      <a class="item" href="https://github.com/esther0012/mentora-front" target="_blank" rel="noopener">
+        <div class="idx">/003</div>
+        <div>
+          <h3>mentora · front</h3>
+          <div class="item-sub">vue · javascript</div>
+          <div class="stack-mini" data-t="work.3.tag">edtech · sessões · integração back</div>
+        </div>
+        <div class="desc" data-t="work.3.desc">front-end em vue para produto de mentoria: telas de estudo, gestão de sessões e integração com back existente.</div>
+        <div class="item-arrow">↗</div>
+      </a>
+
+      <a class="item" href="https://github.com/esther0012/nadice-website" target="_blank" rel="noopener">
+        <div class="idx">/004</div>
+        <div>
+          <h3>nadice · website</h3>
+          <div class="item-sub">scss · html</div>
+          <div class="stack-mini" data-t="work.4.tag">institucional · mixins · sem framework</div>
+        </div>
+        <div class="desc" data-t="work.4.desc">site institucional inteiro em scss bem organizado — mixins, variáveis e responsividade sem framework pesado por trás.</div>
+        <div class="item-arrow">↗</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ————— LAB ————— -->
+  <section id="lab" aria-labelledby="lab-title">
+    <div class="sec-head">
+      <div class="sec-label" data-num="+ / lab">design range</div>
+      <h2 class="sec-title" id="lab-title" data-t="lab.title">dez direções, um produto.</h2>
+    </div>
+    <p class="sec-lede" data-t="lab.lede"><b>10 landing pages</b> construídas em paralelo para o mesmo produto. cliente escolhe a direção — eu já mostrei o mapa. serve para separar <b>preferência pessoal</b> de <b>decisão de design</b>.</p>
+
+    <div class="lab-grid" role="list" aria-label="landing page explorations">
+      <a class="lab" role="listitem" href="https://github.com/esther0012/v1-dark-prestige" target="_blank" rel="noopener">
+        <div class="lab-preview lp1">v01</div>
+        <div class="lab-meta"><span class="n">dark prestige</span><span class="i">01/10</span></div>
+        <span class="lab-arrow">↗</span>
+      </a>
+      <a class="lab" role="listitem" href="https://github.com/esther0012/v2-bold-editorial" target="_blank" rel="noopener">
+        <div class="lab-preview lp2">v02</div>
+        <div class="lab-meta"><span class="n">bold editorial</span><span class="i">02/10</span></div>
+        <span class="lab-arrow">↗</span>
+      </a>
+      <a class="lab" role="listitem" href="https://github.com/esther0012/v3-split-hero-form" target="_blank" rel="noopener">
+        <div class="lab-preview lp3">v03</div>
+        <div class="lab-meta"><span class="n">split hero</span><span class="i">03/10</span></div>
+        <span class="lab-arrow">↗</span>
+      </a>
+      <a class="lab" role="listitem" href="https://github.com/esther0012/v4-brutalist" target="_blank" rel="noopener">
+        <div class="lab-preview lp4">v04</div>
+        <div class="lab-meta"><span class="n">brutalist</span><span class="i">04/10</span></div>
+        <span class="lab-arrow">↗</span>
+      </a>
+      <a class="lab" role="listitem" href="https://github.com/esther0012/v5-financial-trust" target="_blank" rel="noopener">
+        <div class="lab-preview lp5">v05</div>
+        <div class="lab-meta"><span class="n">financial trust</span><span class="i">05/10</span></div>
+        <span class="lab-arrow">↗</span>
+      </a>
+      <a class="lab" role="listitem" href="https://github.com/esther0012/v6-tropical-warmth" target="_blank" rel="noopener">
+        <div class="lab-preview lp6">v06</div>
+        <div class="lab-meta"><span class="n">tropical warmth</span><span class="i">06/10</span></div>
+        <span class="lab-arrow">↗</span>
+      </a>
+      <a class="lab" role="listitem" href="https://github.com/esther0012/v7-mobile-cards" target="_blank" rel="noopener">
+        <div class="lab-preview lp7">v07</div>
+        <div class="lab-meta"><span class="n">mobile cards</span><span class="i">07/10</span></div>
+        <span class="lab-arrow">↗</span>
+      </a>
+      <a class="lab" role="listitem" href="https://github.com/esther0012/v8-diagonal-flow" target="_blank" rel="noopener">
+        <div class="lab-preview lp8">v08</div>
+        <div class="lab-meta"><span class="n">diagonal flow</span><span class="i">08/10</span></div>
+        <span class="lab-arrow">↗</span>
+      </a>
+      <a class="lab" role="listitem" href="https://github.com/esther0012/v9-minimal-light" target="_blank" rel="noopener">
+        <div class="lab-preview lp9">v09</div>
+        <div class="lab-meta"><span class="n">minimal light</span><span class="i">09/10</span></div>
+        <span class="lab-arrow">↗</span>
+      </a>
+      <a class="lab" role="listitem" href="https://github.com/esther0012/v10-social-proof-first" target="_blank" rel="noopener">
+        <div class="lab-preview lp10">v10</div>
+        <div class="lab-meta"><span class="n">social proof</span><span class="i">10/10</span></div>
+        <span class="lab-arrow">↗</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ————— PROCESS ————— -->
+  <section id="process" aria-labelledby="process-title">
+    <div class="sec-head">
+      <div class="sec-label" data-num="04 /">process</div>
+      <h2 class="sec-title" id="process-title" data-t="proc.title">como a gente trabalha junto.</h2>
+    </div>
+    <p class="sec-lede" data-t="proc.lede">um método simples pensado para reduzir surpresa dos dois lados. escopo, prazo e preço fechados antes do código. entrega em sprints semanais com o cliente vendo o produto crescer.</p>
+
+    <div class="process">
+      <div class="step">
+        <div class="step-head"><span data-t="proc.step">step</span><span class="step-num">01</span></div>
+        <h3 data-t="proc.1.title">brief</h3>
+        <p data-t="proc.1.desc">30min de conversa por chamada. entendo o problema, o público e o resultado que precisa acontecer.</p>
+        <div class="step-eta" data-t="proc.1.eta">grátis · 30 min</div>
+      </div>
+      <div class="step">
+        <div class="step-head"><span data-t="proc.step_">step</span><span class="step-num">02</span></div>
+        <h3 data-t="proc.2.title">proposta</h3>
+        <p data-t="proc.2.desc">documento com escopo, prazo, preço e o que <b>não</b> está incluso. nada começa sem isso assinado.</p>
+        <div class="step-eta" data-t="proc.2.eta">em até 48h</div>
+      </div>
+      <div class="step">
+        <div class="step-head"><span data-t="proc.step__">step</span><span class="step-num">03</span></div>
+        <h3 data-t="proc.3.title">execução</h3>
+        <p data-t="proc.3.desc">sprints semanais com demo ao final de cada uma. ajustes de rota são absorvidos sem virar caos.</p>
+        <div class="step-eta" data-t="proc.3.eta">semanal</div>
+      </div>
+      <div class="step">
+        <div class="step-head"><span data-t="proc.step___">step</span><span class="step-num">04</span></div>
+        <h3 data-t="proc.4.title">entrega</h3>
+        <p data-t="proc.4.desc">deploy em produção, handoff técnico e 15 dias de suporte gratuito para ajustes pós-lançamento.</p>
+        <div class="step-eta" data-t="proc.4.eta">deploy · +15d</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ————— TRACK ————— -->
+  <section id="track" aria-labelledby="track-title">
+    <div class="sec-head">
+      <div class="sec-label" data-num="+ / bg" data-t="track.label">credenciais</div>
+      <h2 class="sec-title" id="track-title" data-t="track.title"><span class="hl">clt em paralelo:</span> quatro anos em times de produto.</h2>
+    </div>
+    <p class="sec-lede" data-t="track.lede">o freelance não vem de curso — vem de <b>quatro anos</b> resolvendo problema real em cinco empresas, entre saúde, financeiro e compras públicas.</p>
+
+    <div class="track" role="list">
+      <div class="stop" role="listitem">
+        <div class="yr now" data-t="track.1.yr">2026 → agora</div>
+        <div class="role"><span data-t="track.1.role">desenvolvedora fullstack</span><span class="company">referência capital</span></div>
+        <div class="note" data-t="track.1.note">automações python e integrações que substituem tarefa manual nas operações da empresa.</div>
+      </div>
+      <div class="stop" role="listitem">
+        <div class="yr">2025 → 2026</div>
+        <div class="role"><span data-t="track.2.role">desenvolvedora fullstack</span><span class="company">portal de compras públicas</span></div>
+        <div class="note" data-t="track.2.note">ciclo completo de features — do requisito ao deploy — em contexto de regras densas.</div>
+      </div>
+      <div class="stop" role="listitem">
+        <div class="yr">2024 → 2025</div>
+        <div class="role"><span data-t="track.3.role">desenvolvedora front-end</span><span class="company">geap autogestão em saúde</span></div>
+        <div class="note" data-t="track.3.note">interfaces para produto de saúde suplementar com foco em acessibilidade e fluxo do beneficiário.</div>
+      </div>
+      <div class="stop" role="listitem">
+        <div class="yr">2024</div>
+        <div class="role"><span data-t="track.4.role">desenvolvedora front-end</span><span class="company">incript</span></div>
+        <div class="note" data-t="track.4.note">desenvolvimento de interface e integração com back-end em ciclos curtos de entrega.</div>
+      </div>
+      <div class="stop" role="listitem">
+        <div class="yr">2022 → 2024</div>
+        <div class="role"><span data-t="track.5.role">estagiária de desenvolvimento</span><span class="company">poupex</span></div>
+        <div class="note" data-t="track.5.note">dois anos entre sistemas novos e sustentação de legado — a fundação prática do trabalho de hoje.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ————— FAQ ————— -->
+  <section id="faq" aria-labelledby="faq-title">
+    <div class="sec-head">
+      <div class="sec-label" data-num="+ / faq" data-t="faq.label">perguntas frequentes</div>
+      <h2 class="sec-title" id="faq-title" data-t="faq.title">antes que você pergunte.</h2>
+    </div>
+
+    <div class="faq">
+      <div class="q">
+        <div class="k">/ 01</div>
+        <div>
+          <h4 data-t="faq.1.q">como funciona o pagamento?</h4>
+          <p data-t="faq.1.a">projeto fechado: 50% na assinatura da proposta, 50% na entrega em produção. para retainer mensal ou horas avulsas, faturamento a cada 30 dias.</p>
+        </div>
+      </div>
+      <div class="q">
+        <div class="k">/ 02</div>
+        <div>
+          <h4 data-t="faq.2.q">qual o prazo médio de um projeto?</h4>
+          <p data-t="faq.2.a">landing page: 1–2 semanas. site institucional: 2–3 semanas. app web: 3–8 semanas dependendo do escopo. tudo fechado na proposta antes de começar.</p>
+        </div>
+      </div>
+      <div class="q">
+        <div class="k">/ 03</div>
+        <div>
+          <h4 data-t="faq.3.q">trabalha remoto ou presencial?</h4>
+          <p data-t="faq.3.a">100% remoto por padrão. brasília-df como base — presencial pontual no df sob combinação.</p>
+        </div>
+      </div>
+      <div class="q">
+        <div class="k">/ 04</div>
+        <div>
+          <h4 data-t="faq.4.q">emite nota fiscal?</h4>
+          <p data-t="faq.4.a">sim — mei com cnpj ativo. nota fiscal de serviço emitida a cada entrega ou faturamento.</p>
+        </div>
+      </div>
+      <div class="q">
+        <div class="k">/ 05</div>
+        <div>
+          <h4 data-t="faq.5.q">aceita manutenção de projeto existente?</h4>
+          <p data-t="faq.5.a">sim, desde que o código seja repassado por completo e o escopo do que precisa mudar esteja claro. avaliação técnica gratuita antes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ————— CONTACT ————— -->
+  <section id="contact" aria-labelledby="contact-title">
+    <div class="sec-head">
+      <div class="sec-label" data-num="05 /">start a project</div>
+      <h2 class="sec-title" id="contact-title" data-t="contact.title">pronta para o próximo brief.</h2>
+    </div>
+
+    <h3 class="contact-head" data-t="contact.head">seu projeto <span class="glow">merece</span> <span>ser bem feito.</span></h3>
+    <p class="contact-sub" data-t="contact.sub">me manda um <b>e-mail</b> ou <b>whatsapp</b> com uma descrição curta do que você precisa — em <b>até 24h</b> respondo com próximos passos e agenda para um brief de 30min.</p>
+
+    <div class="contact-cta">
+      <a class="btn primary" id="ctaEmail" href="mailto:esthermassabane08@gmail.com?subject=Novo%20projeto%20-%20brief">
+        <span data-t="contact.cta1">enviar brief por e-mail</span>
+        <span class="arr">→</span>
+      </a>
+      <a class="btn" id="ctaWhats" href="https://wa.me/5561998237995?text=Ol%C3%A1%20Esther%2C%20tenho%20um%20projeto%20e%20queria%20conversar." target="_blank" rel="noopener">
+        <span data-t="contact.cta2">chamar no whatsapp</span>
+        <span class="arr">↗</span>
+      </a>
+    </div>
+
+    <div class="contact-list">
+      <a href="mailto:esthermassabane08@gmail.com">
+        <span class="k">email</span>
+        <span class="v">esthermassabane08@gmail.com</span>
+        <span class="arrow">↗</span>
+      </a>
+      <a href="https://wa.me/5561998237995" target="_blank" rel="noopener">
+        <span class="k">whatsapp</span>
+        <span class="v">+55 (61) 99823-7995</span>
+        <span class="arrow">↗</span>
+      </a>
+      <a href="https://www.linkedin.com/in/esther-massabane-mynssen" target="_blank" rel="noopener">
+        <span class="k">linkedin</span>
+        <span class="v">/in/esther-massabane-mynssen</span>
+        <span class="arrow">↗</span>
+      </a>
+      <a href="https://github.com/esther0012" target="_blank" rel="noopener">
+        <span class="k">github</span>
+        <span class="v">github.com/esther0012</span>
+        <span class="arrow">↗</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ————— FOOTER ————— -->
+  <footer>
+    <div>© <b>2026</b> · esther massabane mynssen</div>
+    <div data-t="footer.mid">freelance fullstack · brasília</div>
+    <div>v <b>4.0</b> · <span id="footClock">—:—</span> bsb</div>
+  </footer>
+</div>
+
+<script>
+  // ————— i18n dictionary —————
+  const T = {
+    pt: {
+      title: "esther massabane — freelance fullstack developer",
+      "nav.services": "services",
+      "nav.stack": "stack",
+      "nav.work": "work",
+      "nav.process": "process",
+      "nav.contact": "contact",
+      "nav.hire": "iniciar projeto ↗",
+
+      "hero.avail": "aceitando 2 projetos · q1 · 2026",
+      "hero.loc": "brasília, df · remoto",
+      "hero.lang": "pt-br · en",
+      "hero.title": 'freelance<br><span class="accent">fullstack</span> <span class="low">developer</span><span class="cursor" aria-hidden="true"></span>',
+      "hero.pitch": 'construo <b>sites, apps web e automações</b> para times que precisam do produto <b>funcionando</b> — não só entregue. quatro anos entre <b>react, .net e python</b>, do primeiro brief ao deploy em produção. <span class="glow">orçamento em 24h.</span>',
+      "hero.cta1": "solicitar orçamento",
+      "hero.cta2": "ver projetos entregues",
+
+      "stats.1u": "anos",
+      "stats.1l": "em produção",
+      "stats.2u": "stacks",
+      "stats.3u": "landings",
+      "stats.3l": "no laboratório visual",
+      "stats.4l": "para responder brief",
+
+      "svc.title": 'o que eu entrego. <span class="hl">preço e prazo claros.</span>',
+      "svc.lede": "quatro frentes de trabalho — cada projeto começa com um <b>brief de 30min</b> e uma <b>proposta escrita em 48h</b>, com escopo, prazo e preço fechados antes de eu escrever uma linha de código.",
+      "svc.1.price": "a partir de 1 sem.",
+      "svc.1.title": "landing pages & sites",
+      "svc.1.desc": "página única ou site institucional completo — html, react ou vue. copy, layout, animações e deploy inclusos.",
+      "svc.2.price": "a partir de 3 sem.",
+      "svc.2.title": "apps web sob demanda",
+      "svc.2.desc": "produto web do zero ou nova feature em base existente. front tipado, back em .net ou node, banco, auth e deploy.",
+      "svc.3.price": "a partir de 2 sem.",
+      "svc.3.title": "apis & integrações",
+      "svc.3.desc": "rest apis, integrações com serviços externos, gateways de pagamento e conectores entre sistemas que não se conversam.",
+      "svc.4.price": "a partir de 1 sem.",
+      "svc.4.title": "automações & scripts",
+      "svc.4.desc": "workflows em python ou n8n que substituem tarefa manual — scraping, relatórios agendados, sync entre planilhas e apis.",
+
+      "stack.title": 'capacidades técnicas. <span class="hl">do pixel à automação.</span>',
+      "stack.1.meta": "front · ux",
+      "stack.2.meta": "back · integração",
+      "stack.3.meta": "ops · fluxo",
+      "stack.4.meta": "infra · persistência",
+
+      "work.title": 'projetos entregues. <span class="hl">em produção real.</span>',
+      "work.1.tag": "back-end · sorteios · regras transacionais",
+      "work.1.desc": "back-end de plataforma de rifas online: regras de sorteio, persistência transacional e endpoints rest para o front consumir sem susto.",
+      "work.2.tag": "front-end · mobile-first · estado tipado",
+      "work.2.desc": "interface para compra e gestão de cotas. fluxo pensado para mobile primeiro, com estado tipado e componentes reutilizáveis.",
+      "work.3.tag": "edtech · sessões · integração back",
+      "work.3.desc": "front-end em vue para produto de mentoria: telas de estudo, gestão de sessões e integração com back existente.",
+      "work.4.tag": "institucional · mixins · sem framework",
+      "work.4.desc": "site institucional inteiro em scss bem organizado — mixins, variáveis e responsividade sem framework pesado por trás.",
+
+      "lab.title": "dez direções, um produto.",
+      "lab.lede": "<b>10 landing pages</b> construídas em paralelo para o mesmo produto. cliente escolhe a direção — eu já mostrei o mapa. serve para separar <b>preferência pessoal</b> de <b>decisão de design</b>.",
+
+      "proc.title": "como a gente trabalha junto.",
+      "proc.lede": "um método simples pensado para reduzir surpresa dos dois lados. escopo, prazo e preço fechados antes do código. entrega em sprints semanais com o cliente vendo o produto crescer.",
+      "proc.step": "step", "proc.step_": "step", "proc.step__": "step", "proc.step___": "step",
+      "proc.1.title": "brief", "proc.1.desc": "30min de conversa por chamada. entendo o problema, o público e o resultado que precisa acontecer.", "proc.1.eta": "grátis · 30 min",
+      "proc.2.title": "proposta", "proc.2.desc": "documento com escopo, prazo, preço e o que <b>não</b> está incluso. nada começa sem isso assinado.", "proc.2.eta": "em até 48h",
+      "proc.3.title": "execução", "proc.3.desc": "sprints semanais com demo ao final de cada uma. ajustes de rota são absorvidos sem virar caos.", "proc.3.eta": "semanal",
+      "proc.4.title": "entrega", "proc.4.desc": "deploy em produção, handoff técnico e 15 dias de suporte gratuito para ajustes pós-lançamento.", "proc.4.eta": "deploy · +15d",
+
+      "track.label": "credenciais",
+      "track.title": '<span class="hl">clt em paralelo:</span> quatro anos em times de produto.',
+      "track.lede": "o freelance não vem de curso — vem de <b>quatro anos</b> resolvendo problema real em cinco empresas, entre saúde, financeiro e compras públicas.",
+      "track.1.yr": "2026 → agora",
+      "track.1.role": "desenvolvedora fullstack",
+      "track.1.note": "automações python e integrações que substituem tarefa manual nas operações da empresa.",
+      "track.2.role": "desenvolvedora fullstack",
+      "track.2.note": "ciclo completo de features — do requisito ao deploy — em contexto de regras densas.",
+      "track.3.role": "desenvolvedora front-end",
+      "track.3.note": "interfaces para produto de saúde suplementar com foco em acessibilidade e fluxo do beneficiário.",
+      "track.4.role": "desenvolvedora front-end",
+      "track.4.note": "desenvolvimento de interface e integração com back-end em ciclos curtos de entrega.",
+      "track.5.role": "estagiária de desenvolvimento",
+      "track.5.note": "dois anos entre sistemas novos e sustentação de legado — a fundação prática do trabalho de hoje.",
+
+      "faq.label": "perguntas frequentes",
+      "faq.title": "antes que você pergunte.",
+      "faq.1.q": "como funciona o pagamento?", "faq.1.a": "projeto fechado: 50% na assinatura da proposta, 50% na entrega em produção. para retainer mensal ou horas avulsas, faturamento a cada 30 dias.",
+      "faq.2.q": "qual o prazo médio de um projeto?", "faq.2.a": "landing page: 1–2 semanas. site institucional: 2–3 semanas. app web: 3–8 semanas dependendo do escopo. tudo fechado na proposta antes de começar.",
+      "faq.3.q": "trabalha remoto ou presencial?", "faq.3.a": "100% remoto por padrão. brasília-df como base — presencial pontual no df sob combinação.",
+      "faq.4.q": "emite nota fiscal?", "faq.4.a": "sim — mei com cnpj ativo. nota fiscal de serviço emitida a cada entrega ou faturamento.",
+      "faq.5.q": "aceita manutenção de projeto existente?", "faq.5.a": "sim, desde que o código seja repassado por completo e o escopo do que precisa mudar esteja claro. avaliação técnica gratuita antes.",
+
+      "contact.title": "pronta para o próximo brief.",
+      "contact.head": 'seu projeto <span class="glow">merece</span> <span>ser bem feito.</span>',
+      "contact.sub": "me manda um <b>e-mail</b> ou <b>whatsapp</b> com uma descrição curta do que você precisa — em <b>até 24h</b> respondo com próximos passos e agenda para um brief de 30min.",
+      "contact.cta1": "enviar brief por e-mail",
+      "contact.cta2": "chamar no whatsapp",
+
+      "footer.mid": "freelance fullstack · brasília",
+
+      "_mailSubject": "Novo projeto - brief",
+      "_whatsMsg": "Olá Esther, tenho um projeto e queria conversar."
+    },
+    en: {
+      title: "esther massabane — freelance fullstack developer",
+      "nav.services": "services",
+      "nav.stack": "stack",
+      "nav.work": "work",
+      "nav.process": "process",
+      "nav.contact": "contact",
+      "nav.hire": "start a project ↗",
+
+      "hero.avail": "accepting 2 projects · q1 · 2026",
+      "hero.loc": "brasília, df · remote",
+      "hero.lang": "en · pt-br",
+      "hero.title": 'freelance<br><span class="accent">fullstack</span> <span class="low">developer</span><span class="cursor" aria-hidden="true"></span>',
+      "hero.pitch": 'i build <b>websites, web apps and automations</b> for teams that need the product <b>working</b> — not just shipped. four years across <b>react, .net and python</b>, from the first brief to production deploy. <span class="glow">quote in 24h.</span>',
+      "hero.cta1": "request a quote",
+      "hero.cta2": "see delivered work",
+
+      "stats.1u": "yrs",
+      "stats.1l": "in production",
+      "stats.2u": "stacks",
+      "stats.3u": "landings",
+      "stats.3l": "in the visual lab",
+      "stats.4l": "to reply to your brief",
+
+      "svc.title": 'what i deliver. <span class="hl">clear price and timeline.</span>',
+      "svc.lede": "four service tracks — every project starts with a <b>30min brief</b> and a <b>written proposal in 48h</b>, with scope, timeline and price locked before i write a line of code.",
+      "svc.1.price": "from 1 week",
+      "svc.1.title": "landing pages & websites",
+      "svc.1.desc": "single page or full company site — html, react or vue. copy, layout, animations and deploy included.",
+      "svc.2.price": "from 3 weeks",
+      "svc.2.title": "custom web apps",
+      "svc.2.desc": "web product from scratch or a new feature on top of an existing base. typed front, back in .net or node, database, auth and deploy.",
+      "svc.3.price": "from 2 weeks",
+      "svc.3.title": "apis & integrations",
+      "svc.3.desc": "rest apis, integrations with external services, payment gateways and connectors between systems that don't talk to each other.",
+      "svc.4.price": "from 1 week",
+      "svc.4.title": "automations & scripts",
+      "svc.4.desc": "python or n8n workflows that replace manual work — scraping, scheduled reports, sync between spreadsheets and apis.",
+
+      "stack.title": 'technical capabilities. <span class="hl">from pixel to automation.</span>',
+      "stack.1.meta": "front · ux",
+      "stack.2.meta": "back · integration",
+      "stack.3.meta": "ops · flow",
+      "stack.4.meta": "infra · persistence",
+
+      "work.title": 'shipped projects. <span class="hl">in real production.</span>',
+      "work.1.tag": "back-end · raffles · transactional rules",
+      "work.1.desc": "back-end for an online raffle platform: draw rules, transactional persistence and rest endpoints the front consumes safely.",
+      "work.2.tag": "front-end · mobile-first · typed state",
+      "work.2.desc": "interface for buying and managing raffle shares. mobile-first flow, typed state and reusable components.",
+      "work.3.tag": "edtech · sessions · back integration",
+      "work.3.desc": "vue front-end for a mentoring product: study screens, session management and integration with the existing back-end.",
+      "work.4.tag": "corporate · mixins · no framework",
+      "work.4.desc": "full company website in well-organized scss — mixins, variables and responsiveness with no heavy framework behind it.",
+
+      "lab.title": "ten directions, one product.",
+      "lab.lede": "<b>10 landing pages</b> built in parallel for the same product. the client picks the direction — i've already mapped the options. it separates <b>personal preference</b> from <b>design decision</b>.",
+
+      "proc.title": "how we work together.",
+      "proc.lede": "a simple method built to reduce surprise on both sides. scope, timeline and price locked before code. delivery in weekly sprints so the client watches the product grow.",
+      "proc.step": "step", "proc.step_": "step", "proc.step__": "step", "proc.step___": "step",
+      "proc.1.title": "brief", "proc.1.desc": "30min conversation on a call. i map the problem, the audience and the outcome that needs to happen.", "proc.1.eta": "free · 30 min",
+      "proc.2.title": "proposal", "proc.2.desc": "document with scope, timeline, price and what is <b>not</b> included. nothing starts before it's signed.", "proc.2.eta": "within 48h",
+      "proc.3.title": "execution", "proc.3.desc": "weekly sprints with a demo at the end of each. course corrections absorbed without turning into chaos.", "proc.3.eta": "weekly",
+      "proc.4.title": "delivery", "proc.4.desc": "production deploy, technical handoff and 15 days of free post-launch support for adjustments.", "proc.4.eta": "deploy · +15d",
+
+      "track.label": "credentials",
+      "track.title": '<span class="hl">full-time in parallel:</span> four years on product teams.',
+      "track.lede": "the freelance doesn't come from a course — it comes from <b>four years</b> solving real problems at five companies, across healthcare, finance and public procurement.",
+      "track.1.yr": "2026 → now",
+      "track.1.role": "fullstack developer",
+      "track.1.note": "python automations and integrations that replace manual work in the company's operations.",
+      "track.2.role": "fullstack developer",
+      "track.2.note": "full feature cycle — from requirement to deploy — in a context of dense business rules.",
+      "track.3.role": "front-end developer",
+      "track.3.note": "interfaces for a private health-care product focused on accessibility and the beneficiary's flow.",
+      "track.4.role": "front-end developer",
+      "track.4.note": "interface development and back-end integration in short delivery cycles.",
+      "track.5.role": "software dev intern",
+      "track.5.note": "two years between new systems and legacy maintenance — the practical foundation for today's work.",
+
+      "faq.label": "frequently asked",
+      "faq.title": "before you ask.",
+      "faq.1.q": "how does payment work?", "faq.1.a": "fixed-scope project: 50% on proposal signing, 50% on production delivery. for monthly retainer or hourly, invoicing every 30 days.",
+      "faq.2.q": "what's the average project timeline?", "faq.2.a": "landing page: 1–2 weeks. company website: 2–3 weeks. web app: 3–8 weeks depending on scope. everything locked in the proposal before starting.",
+      "faq.3.q": "remote or on-site?", "faq.3.a": "100% remote by default. brasília-df as base — occasional on-site in df on request.",
+      "faq.4.q": "do you invoice?", "faq.4.a": "yes — brazilian mei with active cnpj. service invoice issued on each delivery or billing cycle.",
+      "faq.5.q": "do you take over existing projects?", "faq.5.a": "yes, as long as the code is fully handed over and the scope of what needs to change is clear. free technical assessment first.",
+
+      "contact.title": "ready for the next brief.",
+      "contact.head": 'your project <span class="glow">deserves</span> <span>to be well built.</span>',
+      "contact.sub": "send me an <b>email</b> or <b>whatsapp</b> with a short description of what you need — i reply <b>within 24h</b> with next steps and a slot for a 30min brief.",
+      "contact.cta1": "send brief by email",
+      "contact.cta2": "reach out on whatsapp",
+
+      "footer.mid": "freelance fullstack · brasília",
+
+      "_mailSubject": "New project - brief",
+      "_whatsMsg": "Hi Esther, I have a project and I'd like to talk."
+    }
+  };
+
+  const LANG_KEY = "esther.lang";
+  const THEME_KEY = "esther.theme";
+
+  function initialLang() {
+    const saved = (function(){ try { return localStorage.getItem(LANG_KEY); } catch(e){ return null; } })();
+    if (saved === "pt" || saved === "en") return saved;
+    const nav = (navigator.language || "pt").toLowerCase();
+    return nav.startsWith("pt") ? "pt" : "en";
+  }
+
+  function applyLang(lang) {
+    const dict = T[lang]; if (!dict) return;
+    document.documentElement.setAttribute("lang", lang === "pt" ? "pt-BR" : "en");
+    document.title = dict.title;
+
+    document.querySelectorAll("[data-t]").forEach(el => {
+      const k = el.getAttribute("data-t");
+      if (dict[k] != null) el.innerHTML = dict[k];
+    });
+
+    // dynamic href updates
+    const mail = document.getElementById("ctaEmail");
+    if (mail) mail.setAttribute("href", "mailto:esthermassabane08@gmail.com?subject=" + encodeURIComponent(dict._mailSubject));
+    const wa = document.getElementById("ctaWhats");
+    if (wa) wa.setAttribute("href", "https://wa.me/5561998237995?text=" + encodeURIComponent(dict._whatsMsg));
+
+    // toggle active on buttons
+    document.querySelectorAll(".lang button").forEach(b => {
+      b.classList.toggle("active", b.dataset.lang === lang);
+    });
+
+    try { localStorage.setItem(LANG_KEY, lang); } catch(e) {}
+  }
+
+  // wire language buttons
+  document.querySelectorAll(".lang button").forEach(b => {
+    b.addEventListener("click", () => applyLang(b.dataset.lang));
+  });
+  applyLang(initialLang());
+
+  // ————— clock —————
+  (function () {
+    const t1 = document.getElementById('clockTime');
+    const t2 = document.getElementById('footClock');
+    function pad(n){ return String(n).padStart(2,'0'); }
+    function tick() {
+      const now = new Date();
+      const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+      const bsb = new Date(utc + (-3 * 3600000));
+      const hh = pad(bsb.getHours()), mm = pad(bsb.getMinutes()), ss = pad(bsb.getSeconds());
+      if (t1) t1.textContent = `${hh}:${mm}:${ss}`;
+      if (t2) t2.textContent = `${hh}:${mm}`;
+    }
+    tick(); setInterval(tick, 1000);
+  })();
+
+  // ————— theme —————
+  (function () {
+    const root = document.documentElement;
+    const btn = document.getElementById('themeToggle');
+    function current() {
+      const stamped = root.getAttribute('data-theme');
+      if (stamped) return stamped;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    function label(t) { btn.textContent = t === 'dark' ? '◐ dark' : '◑ light'; }
+    // apply saved theme
+    try {
+      const saved = localStorage.getItem(THEME_KEY);
+      if (saved) root.setAttribute('data-theme', saved);
+    } catch(e) {}
+    label(current());
+    btn.addEventListener('click', () => {
+      const next = current() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem(THEME_KEY, next); } catch(e) {}
+      label(next);
+    });
+  })();
+</script>
